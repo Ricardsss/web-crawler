@@ -4,12 +4,15 @@
   "description": "This is a Node.js web crawler",
   "main": "main.js",
   "scripts": {
-    "start": "node main",
+    "start": "nodemon main",
     "test": "jest"
   },
   "author": "Ricardo Brites",
   "license": "ISC",
   "devDependencies": {
     "jest": "^29.4.3"
+  },
+  "dependencies": {
+    "jsdom": "^21.1.0"
   }
 }

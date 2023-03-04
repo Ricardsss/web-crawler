@@ -1,3 +1,5 @@
+const { JSDOM } = require("jsdom");
+
 const normalizeURL = (urlString) => {
   if (!urlString) {
     return "";
@@ -10,4 +12,28 @@ const normalizeURL = (urlString) => {
   return `${host}${path}`;
 };
 
-module.exports = { normalizeURL };
+const isValidURL = (urlString) => {
+  try {
+    return Boolean(new URL(urlString));
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+const getURLsFromHTML = (html, baseURL) => {
+  const urls = [];
+  const dom = new JSDOM(html);
+  const aTags = dom.window.document.querySelectorAll("a");
+  aTags.forEach((aTag) => {
+    const urlString = aTag.href;
+    if (isValidURL(urlString)) {
+      urls.push(urlString);
+    } else if (urlString.startsWith("/")) {
+      urls.push(`${baseURL}${urlString}`);
+    }
+  });
+  return urls;
+};
+
+module.exports = { normalizeURL, getURLsFromHTML };
